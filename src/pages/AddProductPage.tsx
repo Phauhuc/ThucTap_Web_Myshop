@@ -48,9 +48,7 @@ const AddProductPage: React.FC = () => {
   const {
     register,
     handleSubmit,
-    setValue,
     reset,
-    watch,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     resolver: yupResolver(schema as any),
@@ -67,7 +65,6 @@ const AddProductPage: React.FC = () => {
     },
   });
 
-  const imageFieldValue = watch("image");
 
   const { data: existingProduct, isLoading: isFetchingProduct, error: productError } = useQuery<Product | null>({
     queryKey: ["product", id ?? "no-id"],
@@ -169,7 +166,7 @@ const AddProductPage: React.FC = () => {
       const productToUpdate: Product = { ...(productPayload as Product), id };
       console.log("PUT ->", productToUpdate);
       updateMutation.mutate(productToUpdate, {
-        onSuccess: (res) => {
+        onSuccess: () => {
           toast.success("Cập nhật sản phẩm thành công");
           navigate("/collection");
         },
